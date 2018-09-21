@@ -2,7 +2,9 @@ package com.example.data.tracker.mylibrary.websocket.client;
 
 import android.util.Log;
 
-import com.example.data.tracker.mylibrary.protocol.SnapshotPackage;
+import com.example.data.tracker.mylibrary.controler.DataTransmit;
+import com.example.data.tracker.mylibrary.editor.snapshot.SnapshotInfo;
+import com.example.data.tracker.mylibrary.editor.viewTree.ViewTreeInfo;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -42,13 +44,7 @@ public class WebClient {
                 writeExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            SnapshotPackage snapshotPackage = new SnapshotPackage();
-                            webSocket.sendMessage(RequestBody.create(WebSocket.BINARY,snapshotPackage.toByteArray()));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
+                        startTransmit(webSocket);
                     }
                 });
             }
@@ -78,6 +74,35 @@ public class WebClient {
                 Log.e(TAG, "onClose: " + code + "," + reason) ;
             }
         });
+    }
+
+    private void startTransmit(final WebSocket webSocket) {
+        //startSnapShot
+        DataTransmit.getInstance().startTransmit(new DataTransmit.OnDataListener() {
+
+
+            @Override
+            public void onSnapshotSuccess(SnapshotInfo snapshotInfo) {
+                try {
+                    //write bitmap data
+                    webSocket.sendMessage(RequestBody.create(WebSocket.BINARY,snapshotInfo.toByteArray()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onGetViewTreeSuccess(ViewTreeInfo viewTreeInfo) {
+                //write viewTreeJson
+                try {
+                    webSocket.sendMessage(RequestBody.create(WebSocket.TEXT,viewTreeInfo.toJson().toString()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
     }
 
 }

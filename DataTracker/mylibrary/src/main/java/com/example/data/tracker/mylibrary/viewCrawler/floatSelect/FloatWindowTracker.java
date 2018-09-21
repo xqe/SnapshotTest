@@ -1,4 +1,4 @@
-package com.example.data.tracker.mylibrary.viewCrawler.viewTree;
+package com.example.data.tracker.mylibrary.viewCrawler.floatSelect;
 
 import android.app.Activity;
 import android.content.Context;
@@ -73,7 +73,7 @@ public class FloatWindowTracker {
             @Override
             public boolean onLongClick(View v) {
                 Log.e(TAG, "onLongClick: " + focusView.getLocationX() + "," + focusView.getLocationY());
-                View targetView = ViewCrawler.crawlClickView(activity,focusView.getLocationX(),focusView.getLocationY());
+                View targetView = ViewFinder.crawlClickView(activity,focusView.getLocationX(),focusView.getLocationY());
                 String viewID = ViewIDMaker.getViewID(targetView);
                 Object data = targetView.getTag(R.string.view_tag);
                 Log.e(TAG, "dispatchTouchEvent: viewID = " + viewID);

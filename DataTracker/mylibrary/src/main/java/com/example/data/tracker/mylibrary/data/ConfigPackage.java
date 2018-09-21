@@ -1,4 +1,4 @@
-package com.example.data.tracker.mylibrary.protocol;
+package com.example.data.tracker.mylibrary.data;
 
 public class ConfigPackage implements Package{
     @Override
@@ -10,4 +10,5 @@ public class ConfigPackage implements Package{
     public void addData(byte[] data) {
 
     }
+
 }

@@ -1,12 +1,12 @@
-package com.example.data.tracker.mylibrary.viewCrawler.viewTree;
+package com.example.data.tracker.mylibrary.viewCrawler.floatSelect;
 
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ViewCrawler {
-    private static final String TAG = "ViewCrawler";
+public class ViewFinder {
+    private static final String TAG = "ViewFinder";
 
     public static View crawlClickView(Activity activity,int rawX,int rawY) {
         View rootView = activity.getWindow().getDecorView();

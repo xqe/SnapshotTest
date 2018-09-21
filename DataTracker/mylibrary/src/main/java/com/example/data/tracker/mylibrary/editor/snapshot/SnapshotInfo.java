@@ -1,9 +1,11 @@
-package com.example.data.tracker.mylibrary.viewCrawler.snapshot;
+package com.example.data.tracker.mylibrary.editor.snapshot;
 
 import android.graphics.Bitmap;
 import android.view.View;
 
-public class RootViewInfo {
+import com.example.data.tracker.mylibrary.utils.BitmapUtils;
+
+public class SnapshotInfo {
 
     private Bitmap snapshot;
     private View rootView;
@@ -18,10 +20,14 @@ public class RootViewInfo {
         this.snapshot = snapshot;
     }
 
-    public RootViewInfo(View viewRoot, String pageName) {
+    public SnapshotInfo(View viewRoot, String pageName) {
         this.rootView = viewRoot;
         this.pageName = pageName;
         scale = 1.0f;
+    }
+
+    public byte[] toByteArray(){
+        return BitmapUtils.Bitmap2Bytes(snapshot);
     }
 
     public void setScale(float scale) {

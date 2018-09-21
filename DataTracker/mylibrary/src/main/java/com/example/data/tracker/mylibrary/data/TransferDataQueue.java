@@ -1,12 +1,12 @@
-package com.example.data.tracker.mylibrary.cache;
+package com.example.data.tracker.mylibrary.data;
 
-import com.example.data.tracker.mylibrary.protocol.Package;
+import android.util.Log;
 
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**数据传送队列*/
 public class TransferDataQueue {
-
+    private static final String TAG = "TransferDataQueue";
     private static final int MAX_CAPACITY = 10;
 
     private LinkedBlockingDeque<Package> dataQueue;
@@ -25,6 +25,7 @@ public class TransferDataQueue {
 
     public void put(Package data) {
         try {
+            Log.i(TAG, "put package: " + data.toByteArray().length);
             dataQueue.put(data);
         } catch (InterruptedException e) {
             e.printStackTrace();

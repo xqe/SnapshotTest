@@ -1,4 +1,4 @@
-package com.example.data.tracker.mylibrary.protocol;
+package com.example.data.tracker.mylibrary.data;
 
 public class ViewTreePackage implements Package {
     @Override

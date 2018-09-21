@@ -1,4 +1,4 @@
-package com.example.data.tracker.mylibrary.viewCrawler.snapshot;
+package com.example.data.tracker.mylibrary.editor.snapshot;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -9,40 +9,30 @@ import android.view.View;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 /**
- * find RootView form Activity and store snapshot to RootViewInfo
- * Activity -> RootView ->snapshot -> RootViewInfo
+ * find RootView form Activity and store snapshot to SnapshotInfo
+ * Activity -> RootView ->snapshot -> SnapshotInfo
  *
  * */
 @TargetApi(16)
-public class RootViewFinder implements Callable<RootViewInfo>{
+public class SnapshotCall implements Callable<Bitmap>{
     
-    private static final String TAG = "RootViewFinder";
+    private static final String TAG = "SnapshotCall";
 
-    private Activity activity;
+    private View rootView;
 
-    public RootViewFinder(Activity activity) {
-        this.activity = activity;
+    public SnapshotCall(View rootView) {
+        this.rootView = rootView;
     }
 
     @Override
-    public RootViewInfo call() throws Exception {
-        String activityName = activity.getClass().getCanonicalName();
-        View rootView = activity.getWindow().getDecorView().getRootView();
-        RootViewInfo rootViewInfo = new RootViewInfo(rootView,activityName);
-        loadSnapshot(rootViewInfo);
-        return rootViewInfo;
+    public Bitmap call() throws Exception {
+        return loadSnapshot(rootView);
     }
 
-    private void loadSnapshot(RootViewInfo info) {
-        View rootView = info.getRootView();
-        float scale = 1.0f;
-        info.setScale(scale);
+    private Bitmap loadSnapshot(View rootView) {
         Bitmap rawBitmap = null;
         try {
             //1 createSnapshot 获取更清晰截图
@@ -74,10 +64,10 @@ public class RootViewFinder implements Callable<RootViewInfo>{
             Log.v(TAG, "Can't take a bitmap snapshot of view " + rootView + ", skipping for now.", e);
         }
 
-        info.setSnapshot(rawBitmap);
         if (null != originalCacheState && !originalCacheState) {
             rootView.setDrawingCacheEnabled(false);
         }
 
+        return rawBitmap;
     }
 }
