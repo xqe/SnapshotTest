@@ -78,29 +78,6 @@ public class WebClient {
 
     private void startTransmit(final WebSocket webSocket) {
         //startSnapShot
-        DataTransmit.getInstance().startTransmit(new DataTransmit.OnDataListener() {
-
-
-            @Override
-            public void onSnapshotSuccess(SnapshotInfo snapshotInfo) {
-                try {
-                    //write bitmap data
-                    webSocket.sendMessage(RequestBody.create(WebSocket.BINARY,snapshotInfo.toByteArray()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onGetViewTreeSuccess(ViewTreeInfo viewTreeInfo) {
-                //write viewTreeJson
-                try {
-                    webSocket.sendMessage(RequestBody.create(WebSocket.TEXT,viewTreeInfo.toJson().toString()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
 
     }

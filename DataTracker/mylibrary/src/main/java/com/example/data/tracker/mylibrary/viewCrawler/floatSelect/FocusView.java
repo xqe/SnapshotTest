@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 
 public class FocusView extends View {
@@ -48,5 +50,17 @@ public class FocusView extends View {
     @Override
     public boolean performClick() {
         return super.performClick();
+    }
+
+    @Override
+    protected void dispatchVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.dispatchVisibilityChanged(changedView, visibility);
+        Log.e("ContainerLayout FocusView", "dispatchVisibilityChanged: " + changedView.getClass().getName() + "," + visibility );
+    }
+
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        Log.e("ContainerLayout FocusView", "onVisibilityChanged: " + changedView.getClass().getName() + "," + visibility );
     }
 }

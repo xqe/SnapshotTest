@@ -17,37 +17,40 @@ public class ViewIDMaker {
 
     private static final String TAG = "ViewIDMaker";
     private static final String ID_SEPARATOR = "/";
-    private static final String CONNECTOR = "-";
-    private static final String RESOURCE_TAG = "#";
+    public static final String CONNECTOR = "-";
+    public static final String RESOURCE_TAG = "#";
 
 
     public static String getViewID(View view) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder resultBuilder = new StringBuilder();
         while (view != null && hasParent(view)) {
-            String className = view.getClass().getSimpleName();
+            String className = view.getClass().getName();
+            StringBuilder sb = new StringBuilder();
             sb.append(className);
-            int index;
-            String resourceId = getResourceId(view);
-            int realIndex = getViewIndex(view);
-            index = TextUtils.isEmpty(resourceId) ? realIndex : realIndex;
-            sb.append("[");
-            sb.append(index);
-            sb.append("]");
-            if (!TextUtils.isEmpty(resourceId)) {
-                sb.append(RESOURCE_TAG);
-                sb.append(resourceId);
+            int index = 0;
+            String idName = getIdName(view);
+            if (!TextUtils.isEmpty(idName)) {
+                index = getViewIndex(view);
             }
-            sb.append(CONNECTOR);
+            sb.append("[")
+                    .append(index)
+                    .append("]");
+            if (!TextUtils.isEmpty(idName)) {
+                sb.append(RESOURCE_TAG)
+                        .append(idName);
+            }
+            sb.insert(0,CONNECTOR);
+            resultBuilder.insert(0,sb.toString());
             view = (View) view.getParent();
         }
-        if (sb.length() > 1) {
-            sb.deleteCharAt(sb.length() - 1);
+        if (resultBuilder.length() > 1) {
+            resultBuilder.deleteCharAt(0);
         }
-        return sb.toString();
+        return resultBuilder.toString();
     }
 
 
-    private static String getResourceId(View view) {
+    private static String getIdName(View view) {
         Resources resources = view.getResources();
         int id = view.getId();
         String result = "";

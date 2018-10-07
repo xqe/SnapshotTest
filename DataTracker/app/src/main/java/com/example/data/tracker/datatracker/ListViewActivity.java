@@ -6,11 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 
 import com.example.data.tracker.datatracker.adapter.RecyclerAdapter;
 import com.example.data.tracker.datatracker.bean.DownloadInfo;
-import com.example.data.tracker.mylibrary.viewCrawler.viewTree.FloatWindowTracker;
+import com.example.data.tracker.mylibrary.viewCrawler.floatSelect.FloatWindowTracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +51,16 @@ public class ListViewActivity extends BaseActivity implements RecyclerAdapter.On
         recyclerView.setAdapter(recyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        FloatWindowTracker.getInstance().bind(this);
+        //FloatWindowTracker.getInstance().bind(this);
+
+        View rootView = getWindow().getDecorView().getRootView();
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            @Override
+            public void onGlobalLayout() {
+                Log.e(TAG, "onGlobalLayout: =================");
+            }
+        });
     }
 
     @OnClick(R.id.button)
