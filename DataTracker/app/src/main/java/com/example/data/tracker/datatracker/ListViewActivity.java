@@ -38,7 +38,7 @@ public class ListViewActivity extends BaseActivity implements RecyclerAdapter.On
         setContentView(R.layout.activity_listview);
         ButterKnife.bind(this);
         List<DownloadInfo> dataList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 500; i++) {
             DownloadInfo downloadInfo = new DownloadInfo();
             downloadInfo.setAppId(i);
             downloadInfo.setAppName("appName" + i);
@@ -51,7 +51,7 @@ public class ListViewActivity extends BaseActivity implements RecyclerAdapter.On
         recyclerView.setAdapter(recyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //FloatWindowTracker.getInstance().bind(this);
+        FloatWindowTracker.getInstance().bind(this);
 
         View rootView = getWindow().getDecorView().getRootView();
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

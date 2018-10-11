@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -63,6 +64,32 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="55dp"
         android:text="TextView" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="-80dp"
+            android:text="test1"
+            android:id="@+id/test1"/>
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/colorAccent"
+            android:text="test3"
+            android:layout_marginStart="80dp"
+            android:id="@+id/test3"/>
+        <Button
+            android:visibility="gone"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/colorPrimary"
+            android:text="test2"
+            android:layout_marginStart="50dp"
+            android:id="@+id/test2"/>
+    </FrameLayout>
 
 
 </RelativeLayout>

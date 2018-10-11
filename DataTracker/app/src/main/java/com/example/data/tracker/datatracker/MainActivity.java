@@ -11,11 +11,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.data.tracker.mylibrary.controler.DataTransmit;
+import com.example.data.tracker.mylibrary.expose.TrackerManager;
 import com.example.data.tracker.mylibrary.viewCrawler.floatSelect.FloatWindowTracker;
 import com.example.data.tracker.mylibrary.viewCrawler.floatSelect.FocusView;
 import com.example.data.tracker.mylibrary.visitor.AccessibilityDelegate;
-import com.example.data.tracker.mylibrary.visitor.ContainerReplace;
-import com.example.data.tracker.mylibrary.visitor.ExposeManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,15 +45,20 @@ public class MainActivity extends Activity {
     TextView textView2;
     @BindView(R.id.container)
     RelativeLayout container;
+    @BindView(R.id.test1)
+    Button test1;
+    @BindView(R.id.test2)
+    Button test2;
+    @BindView(R.id.test3)
+    Button test3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        FloatWindowTracker.getInstance().bind(this);
         focusView = new FocusView(this);
-        Log.e(TAG, "onCreate: " + this.getClass().getCanonicalName() );
+        Log.e(TAG, "onCreate: " + this.getClass().getCanonicalName());
         View rootView = getWindow().getDecorView().getRootView();
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
@@ -60,14 +68,12 @@ public class MainActivity extends Activity {
             }
         });
 
-        ContainerReplace.replaceContainer(this);
-
         button.setAccessibilityDelegate(new AccessibilityDelegate());
 
         button.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
-                Log.e(TAG, "onSystemUiVisibilityChange: ===============" );
+                Log.e(TAG, "onSystemUiVisibilityChange: ===============");
             }
         });
 
@@ -92,33 +98,11 @@ public class MainActivity extends Activity {
     @OnClick(R.id.button2)
     public void test() {
         //SnapshotTimer.getInstance().startShot(this);
-        if (!isViewAdd) {
-            isViewAdd = true;
-            container.addView(focusView);
-        } else {
-            isViewAdd = false;
-            container.removeView(focusView);
-        }
-
-        if (button.getVisibility() == View.VISIBLE) {
-            button.setVisibility(View.GONE);
-        } else {
-            button.setVisibility(View.VISIBLE);
-        }
-        button.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                boolean visibility = ExposeManager.checkExposureViewDimension(focusView);
-                Log.e(TAG, "ContainerLayout test VIEW REMOVE: " + visibility + "," + focusView.getVisibility());
-                boolean visibility1 = ExposeManager.checkExposureViewDimension(button);
-                Log.e(TAG, "ContainerLayout test VIEW VISIBLE: " + visibility1 + "," + button.getVisibility());
-            }
-        },5000);
     }
 
     @OnClick(R.id.button3)
     public void turn() {
-        startActivity(new Intent(this, SecondActivity.class));
+        startActivity(new Intent(this, ListViewActivity.class));
     }
 
     @Override
@@ -127,10 +111,18 @@ public class MainActivity extends Activity {
         DataTransmit.getInstance().startTransmit(this);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        FloatWindowTracker.getInstance().unBind();
     }
 }
