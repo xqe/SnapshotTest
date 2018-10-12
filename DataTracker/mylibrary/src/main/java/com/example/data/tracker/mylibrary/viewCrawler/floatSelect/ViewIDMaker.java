@@ -1,11 +1,14 @@
 package com.example.data.tracker.mylibrary.viewCrawler.floatSelect;
 
 import android.content.res.Resources;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +25,17 @@ public class ViewIDMaker {
 
 
     public static String getViewID(View view) {
+        Log.e(TAG, "getViewID: " + view.getClass().getSimpleName() );
         StringBuilder resultBuilder = new StringBuilder();
         while (view != null && hasParent(view)) {
+
             String className = view.getClass().getName();
             StringBuilder sb = new StringBuilder();
             sb.append(className);
             int index = 0;
             String idName = getIdName(view);
-            if (!TextUtils.isEmpty(idName)) {
-                index = getViewIndex(view);
+            if (TextUtils.isEmpty(idName)) {
+                index = getViewIndex(view);;
             }
             sb.append("[")
                     .append(index)
@@ -46,6 +51,7 @@ public class ViewIDMaker {
         if (resultBuilder.length() > 1) {
             resultBuilder.deleteCharAt(0);
         }
+        Log.e(TAG, "getViewID: " + resultBuilder.toString() );
         return resultBuilder.toString();
     }
 
@@ -66,8 +72,26 @@ public class ViewIDMaker {
     }
 
     private static int getViewIndex(View view) {
+        Log.e(TAG, "getViewIndex: "  + view.getClass().getSimpleName());
+        if (view.getParent() instanceof ListView) {
+            Log.e(TAG, "getViewIndex: listView" );
+            ListView listView = (ListView) view.getParent();
+            return listView.getPositionForView(view);
+        }
+
+        if (view.getParent() instanceof RecyclerView) {
+            Log.e(TAG, "getViewIndex: RecyclerView" );
+            RecyclerView recyclerView = (RecyclerView) view.getParent();
+            return recyclerView.getChildAdapterPosition(view);
+        }
+
+        if (view.getParent() instanceof ViewPager) {
+            ViewPager viewPager = (ViewPager) view.getParent();
+            return viewPager.getCurrentItem();
+        }
+
         int index;
-        Log.e(TAG, "getViewIndex: " + view.getId());
+        //Log.e(TAG, "getViewIndex: " + view.getId());
         List<View> currentTypeViewList = new ArrayList<>();
         for (int i = 0; i < ((ViewGroup)view.getParent()).getChildCount(); i++) {
             String targetClassName = view.getClass().getSimpleName();

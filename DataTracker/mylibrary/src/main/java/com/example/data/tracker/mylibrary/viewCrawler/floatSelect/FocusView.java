@@ -57,10 +57,4 @@ public class FocusView extends View {
         super.dispatchVisibilityChanged(changedView, visibility);
         Log.e("ContainerLayout FocusView", "dispatchVisibilityChanged: " + changedView.getClass().getName() + "," + visibility );
     }
-
-    @Override
-    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-        super.onVisibilityChanged(changedView, visibility);
-        Log.e("ContainerLayout FocusView", "onVisibilityChanged: " + changedView.getClass().getName() + "," + visibility );
-    }
 }

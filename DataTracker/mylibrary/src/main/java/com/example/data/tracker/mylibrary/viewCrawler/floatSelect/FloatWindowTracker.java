@@ -99,6 +99,7 @@ public class FloatWindowTracker {
 
     /**释放Context引用*/
     public void unBind(){
+        windowManager.removeViewImmediate(focusView);
         windowManager = null;
         layoutParams = null;
         focusView = null;
