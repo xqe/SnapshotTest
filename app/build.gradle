@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'vivo-analytics-plugin'
+//apply plugin: 'vivo-analytics-plugin'
 
 android {
     compileSdkVersion 27

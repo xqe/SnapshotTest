@@ -18,7 +18,7 @@ public class TrackRootView extends FrameLayout {
 
     private static final String TAG = "TrackRootView!";
     private GestureDetector gestureDetector;
-    private static final int CLICK_LIMIT = 30;
+    private static final int CLICK_LIMIT = 20;
     private boolean isSlide = false;
     private boolean isFling = false;
     private float touchX;
@@ -28,6 +28,8 @@ public class TrackRootView extends FrameLayout {
     private FlingUtils flingUtils;
     private FlingHandler flingHandler;
     private static final int MSG_ENDING_FLING = 100;
+    private static final int MSG_ENDING_SLIDE = 101;
+    private static int num = 0;
 
     public TrackRootView(@NonNull Context context) {
         super(context);
@@ -44,16 +46,11 @@ public class TrackRootView extends FrameLayout {
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 LogUtil.i(TAG,"onFling");
                 isFling = true;
-                int durationX = flingUtils.getSplineFlingDuration((int) velocityTracker.getXVelocity());
-                int durationY = flingUtils.getSplineFlingDuration((int) velocityTracker.getYVelocity());
-                if (durationX > 0) {
-                    LogUtil.i(TAG,"onFlingX:" + durationX);
-                    flingHandler.sendFlingMessage(TrackRootView.this,durationX);
-                }
-                if (durationY > 0) {
-                    LogUtil.i(TAG,"onFlingY:" + durationY);
-                    flingHandler.sendFlingMessage(TrackRootView.this,durationY);
-                }
+                int durationX = flingUtils.getSplineFlingDuration((int)velocityX);
+                int durationY = flingUtils.getSplineFlingDuration((int) velocityY);
+                int realDuration = durationX >= durationY ? durationX : durationY;
+                LogUtil.i(TAG,"send Fling message and realDuration= " + realDuration);
+                flingHandler.sendFlingMessage(TrackRootView.this,realDuration);
                 return super.onFling(e1, e2, velocityX, velocityY);
             }
 
@@ -63,8 +60,7 @@ public class TrackRootView extends FrameLayout {
                 LogUtil.i(TAG, "onShowPress: ");
                 if (isFling) {
                     LogUtil.i(TAG, "onShowPress: stopFling");
-                    flingHandler.removeMessages(MSG_ENDING_FLING);
-                    ExposeManager.getInstance().checkExpose(ExposeConstants.TYPE_VIEW_EXPOSE,TrackRootView.this);
+                    flingHandler.sendFlingMessage(TrackRootView.this,0);
                 }
                 isFling = false;
             }
@@ -74,6 +70,8 @@ public class TrackRootView extends FrameLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         LogUtil.i(TAG, "onLayout: ");
+
+        flingHandler.sendFlingMessage(TrackRootView.this,100);
         super.onLayout(changed, left, top, right, bottom);
     }
 
@@ -91,15 +89,16 @@ public class TrackRootView extends FrameLayout {
                 velocityTracker.computeCurrentVelocity(1000, configuration.getScaledMaximumFlingVelocity());
                 if (Math.abs(ev.getX() - touchX) > CLICK_LIMIT || Math.abs(ev.getY() - touchY) > CLICK_LIMIT) {
                     //slide
-                    LogUtil.i(TAG, "dispatchTouchEvent: slide");
                     isSlide = true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 if (isSlide) {
                     isSlide = false;
-                    LogUtil.i(TAG, "dispatchTouchEvent: slide mode for checking expose");
-                    flingHandler.sendFlingMessage(this,100);
+                    if (!isFling) {
+                        LogUtil.i(TAG, "---check expose for sliding situation");
+                        ExposeManager.getInstance().checkExpose(ExposeConstants.TYPE_VIEW_EXPOSE,this);
+                    }
                 }
                 break;
                 default:
@@ -128,8 +127,11 @@ public class TrackRootView extends FrameLayout {
         public void sendFlingMessage(TrackRootView trackRootView,long duration) {
             removeMessages(MSG_ENDING_FLING);
             Message message = obtainMessage(MSG_ENDING_FLING);
+            message.arg1 = num;
+            num ++;
             message.obj = trackRootView;
             sendMessageDelayed(message,duration);
+            LogUtil.i(TAG, "sendFlingMessage: " + message.arg1 + ",duration:" + duration);
         }
 
         @Override
@@ -137,7 +139,8 @@ public class TrackRootView extends FrameLayout {
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_ENDING_FLING:
-                    LogUtil.i(TAG, "handleMessage: endFling");
+                case MSG_ENDING_SLIDE:
+                    LogUtil.i(TAG, "handleMessage: endFling:" + msg.arg1);
                     TrackRootView trackRootView = (TrackRootView) msg.obj;
                     trackRootView.isFling = false;
                     ExposeManager.getInstance().checkExpose(ExposeConstants.TYPE_VIEW_EXPOSE,trackRootView);

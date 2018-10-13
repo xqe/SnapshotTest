@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 public class ExposeWorker {
 
@@ -57,7 +58,7 @@ public class ExposeWorker {
 
         private void doCommit(String viewId,ExposeModel exposeModel) {
             exposeModel.setEndTime(System.currentTimeMillis());
-            LogUtil.e(TAG, "doCommit: " + viewId);
+            LogUtil.e(TAG, "doCommit ExposeList: " + viewId);
         }
     }
 

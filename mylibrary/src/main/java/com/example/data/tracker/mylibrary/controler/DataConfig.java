@@ -10,8 +10,12 @@ public class DataConfig {
 
     //for test
     String[] viewIDs = {
-      "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-android.widget.LinearLayout[0]-android.support.v7.widget.RecyclerView[0]#recycler_view",
-            "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-com.example.data.tracker.mylibrary.expose.TrackRootView[0]-android.widget.LinearLayout[0]-android.support.v7.widget.RecyclerView[0]#recycler_view"
+            "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-com.example.data.tracker.mylibrary.expose.TrackRootView[0]-android.widget.LinearLayout[0]-android.support.v7.widget.RecyclerView[0]#recycler_view",
+            "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-com.example.data.tracker.mylibrary.expose.TrackRootView[0]-android.widget.RelativeLayout[0]-android.support.v7.widget.RecyclerView[0]#recycler_view",
+            "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-com.example.data.tracker.mylibrary.expose.TrackRootView[0]-android.widget.RelativeLayout[0]-android.widget.ListView[0]#list_view",
+            "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-com.example.data.tracker.mylibrary.expose.TrackRootView[0]-android.widget.RelativeLayout[0]-android.support.v4.view.ViewPager[0]#view_pager",
+            "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-com.example.data.tracker.mylibrary.expose.TrackRootView[0]-android.widget.RelativeLayout[0]-android.widget.FrameLayout[0]#search_page",
+            "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-com.example.data.tracker.mylibrary.expose.TrackRootView[0]-android.widget.RelativeLayout[0]-android.widget.FrameLayout[0]#search_page-android.widget.ImageView[0]#search_result",
     };
 
     private DataConfig() {

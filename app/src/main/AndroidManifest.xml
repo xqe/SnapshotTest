@@ -23,6 +23,7 @@
         <activity android:name=".SecondActivity"/>
         <activity android:name=".ScrollViewActivity"/>
         <activity android:name=".RecyclerViewActivity"/>
+        <activity android:name=".MutiActivity"/>
     </application>
 
 </manifest>

@@ -48,13 +48,14 @@ public class ExposeManager {
      * start checking expose for all view on the screen
      */
     public void checkExpose(int exposeType,View view) {
+        Log.i(TAG, "---checkExpose");
         currentExposeList.clear();
         long time = System.currentTimeMillis();
-        LogUtil.i(TAG, "checkExpose: " + time + ",lastTime:" + lastExposeTime);
         if (time - lastExposeTime < exposeConfig.getMiniTime()) {
-            LogUtil.i(TAG, "last expose time : " + (time - lastExposeTime) + "< " + exposeConfig.getMiniTime());
+            LogUtil.i(TAG, "---last expose time : " + (time - lastExposeTime) + ",to close to " + exposeConfig.getMiniTime());
             return;
         }
+        Log.i(TAG, "---checkExpose: update lastExposeTime");
         lastExposeTime = time;
         matchFromViewTree(view);
         commitExposeEvent(exposeType);
@@ -120,13 +121,13 @@ public class ExposeManager {
         obj.setExposeType(exposeType);
         obj.getCurrentExposeList().putAll(currentExposeList);
         obj.getLastExposeList().putAll(lastExposeList);
-        /*for (String key:obj.getCurrentExposeList().keySet()) {
-            LogUtil.i(TAG, "msg currentExposeList: " + key);
+        for (String key:obj.getCurrentExposeList().keySet()) {
+            LogUtil.i(TAG, "currentExposeList: " + key);
         }
 
         for (String key:obj.getLastExposeList().keySet()) {
-            LogUtil.i(TAG, "msg lastExposeList: " + key);
-        }*/
+            LogUtil.i(TAG, "lastExposeList: " + key);
+        }
         Message message = new Message();
         message.what = ExposeWorker.MSG_COMMIT_EXPOSE;
         message.obj = obj;

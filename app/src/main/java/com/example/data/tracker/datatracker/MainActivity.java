@@ -102,7 +102,7 @@ public class MainActivity extends Activity {
 
     @OnClick(R.id.button3)
     public void turn() {
-        startActivity(new Intent(this, ListViewActivity.class));
+        startActivity(new Intent(this, MutiActivity.class));
     }
 
     @Override

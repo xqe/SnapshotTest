@@ -2,7 +2,7 @@ package com.example.data.tracker.mylibrary.expose;
 
 public class ExposeConfig {
 
-    private float areaRatio = 0.8f;
+    private float areaRatio = 0.5f;
     private long miniTime = 100;
 
     public float getAreaRatio() {
