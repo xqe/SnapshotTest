@@ -141,6 +141,10 @@ public class ExposeManager {
             return false;
         }
 
+        if (!isParentVisible(view)) {
+            return false;
+        }
+
         if (view.getParent() == null) {
             return false;
         }
@@ -171,6 +175,21 @@ public class ExposeManager {
             }
         }
         return false;
+    }
+
+    private boolean isParentVisible(View view) {
+        View parent = (View) view.getParent();
+        while (parent != null) {
+            if (parent.getVisibility() == View.GONE || parent.getVisibility() == View.INVISIBLE) {
+                return false;
+            }
+            if (parent.getParent() instanceof View) {
+                parent = (View) parent.getParent();
+            } else {
+                break;
+            }
+        }
+        return true;
     }
 
     private boolean isReuseViewParent(View view) {

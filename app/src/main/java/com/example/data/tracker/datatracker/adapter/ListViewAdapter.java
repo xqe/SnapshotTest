@@ -9,6 +9,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.data.tracker.datatracker.R;
+import com.example.data.tracker.datatracker.view.HorizontalListView;
 
 import java.util.List;
 
@@ -52,10 +53,15 @@ public class ListViewAdapter implements ListAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler,null);
-        TextView textView = view.findViewById(R.id.textView);
-        textView.setTextColor(Color.WHITE);
-        textView.setText(dataList.get(position));
+        View view;
+        if(position == 2) {
+            view = new HorizontalListView(parent.getContext());
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler,null);
+            TextView textView = view.findViewById(R.id.textView);
+            textView.setTextColor(Color.WHITE);
+            textView.setText(dataList.get(position));
+        }
         return view;
     }
 

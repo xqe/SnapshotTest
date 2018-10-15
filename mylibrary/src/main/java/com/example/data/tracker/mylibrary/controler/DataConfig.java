@@ -16,6 +16,7 @@ public class DataConfig {
             "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-com.example.data.tracker.mylibrary.expose.TrackRootView[0]-android.widget.RelativeLayout[0]-android.support.v4.view.ViewPager[0]#view_pager",
             "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-com.example.data.tracker.mylibrary.expose.TrackRootView[0]-android.widget.RelativeLayout[0]-android.widget.FrameLayout[0]#search_page",
             "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-com.example.data.tracker.mylibrary.expose.TrackRootView[0]-android.widget.RelativeLayout[0]-android.widget.FrameLayout[0]#search_page-android.widget.ImageView[0]#search_result",
+            "android.widget.LinearLayout[0]-android.widget.FrameLayout[0]#content-com.example.data.tracker.mylibrary.expose.TrackRootView[0]-android.widget.RelativeLayout[0]-android.widget.ListView[0]#list_view-com.example.data.tracker.datatracker.view.HorizontalListView[2]"
     };
 
     private DataConfig() {
