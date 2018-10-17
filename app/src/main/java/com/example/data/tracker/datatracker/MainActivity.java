@@ -10,15 +10,9 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.data.tracker.mylibrary.controler.DataTransmit;
-import com.example.data.tracker.mylibrary.expose.TrackerManager;
-import com.example.data.tracker.mylibrary.viewCrawler.floatSelect.FloatWindowTracker;
-import com.example.data.tracker.mylibrary.viewCrawler.floatSelect.FocusView;
-import com.example.data.tracker.mylibrary.visitor.AccessibilityDelegate;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.data.tracker.mylibrary.test.DataTransmit;
+import com.example.data.tracker.mylibrary.test.floatSelect.FocusView;
+import com.example.data.tracker.mylibrary.AOP.AccessibilityDelegate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -102,7 +96,7 @@ public class MainActivity extends Activity {
 
     @OnClick(R.id.button3)
     public void turn() {
-        startActivity(new Intent(this, MutiActivity.class));
+        startActivity(new Intent(this, FragmentActivity.class));
     }
 
     @Override

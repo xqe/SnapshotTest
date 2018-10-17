@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.data.tracker.aop.DataBind;
 import com.example.data.tracker.datatracker.bean.DownloadInfo;
-import com.example.data.tracker.mylibrary.viewCrawler.floatSelect.FloatWindowTracker;
+import com.example.data.tracker.mylibrary.test.floatSelect.FloatWindowTracker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
