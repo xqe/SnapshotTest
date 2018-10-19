@@ -20,12 +20,12 @@ public class ViewIDMaker {
 
     private static final String TAG = "ViewIDMaker";
     private static final String ID_SEPARATOR = "/";
-    public static final String CONNECTOR = "-";
+    public static final String CONNECTOR = "/";
     public static final String RESOURCE_TAG = "#";
 
 
     public static String getViewID(View view) {
-        Log.e(TAG, "getViewID: " + view.getClass().getSimpleName() );
+        //Log.e(TAG, "getViewID: " + view.getClass().getSimpleName() );
         StringBuilder resultBuilder = new StringBuilder();
         while (view != null && hasParent(view)) {
 
@@ -35,7 +35,7 @@ public class ViewIDMaker {
             int index = 0;
             String idName = getIdName(view);
             if (TextUtils.isEmpty(idName)) {
-                index = getViewIndex(view);;
+                index = getViewIndex(view);
             }
             sb.append("[")
                     .append(index)
@@ -51,7 +51,7 @@ public class ViewIDMaker {
         if (resultBuilder.length() > 1) {
             resultBuilder.deleteCharAt(0);
         }
-        Log.e(TAG, "getViewID: " + resultBuilder.toString() );
+        //Log.e(TAG, "getViewID: " + resultBuilder.toString() );
         return resultBuilder.toString();
     }
 
@@ -72,7 +72,7 @@ public class ViewIDMaker {
     }
 
     private static int getViewIndex(View view) {
-        Log.e(TAG, "getViewIndex: "  + view.getClass().getSimpleName());
+        //Log.e(TAG, "getViewIndex: "  + view.getClass().getSimpleName());
         if (view.getParent() instanceof ListView) {
             Log.e(TAG, "getViewIndex: listView" );
             ListView listView = (ListView) view.getParent();

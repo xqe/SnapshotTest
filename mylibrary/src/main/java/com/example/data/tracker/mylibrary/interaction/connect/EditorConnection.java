@@ -1,7 +1,8 @@
 package com.example.data.tracker.mylibrary.interaction.connect;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
+
+import com.example.data.tracker.mylibrary.AOP.expose.LogUtil;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_17;
@@ -13,16 +14,18 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
+import java.util.HashMap;
 
 public class EditorConnection {
+    private static final String TAG = "EditorConnection";
     private EditorClient editorClient;
     private BufferedOutputStream bufferedOutputStream;
 
     public EditorConnection(URI uri,int socketTimeout,IWebMessage event){
         editorClient = new EditorClient(uri,socketTimeout,event);
         try {
-            editorClient.connectBlocking();
-        } catch (InterruptedException e) {
+            editorClient.connect();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -44,18 +47,17 @@ public class EditorConnection {
 
     private class EditorClient extends WebSocketClient {
 
-        private static final String TAG = "EditorClient";
-
         private boolean isClosed = false;
         private IWebMessage event;
 
         EditorClient(URI serverURI,int socketTimeout,IWebMessage event) {
-            super(serverURI,new Draft_17(),null,socketTimeout);
+            super(serverURI,new Draft_17(),new HashMap<String, String>(),socketTimeout);
             this.event = event;
         }
 
         @Override
         public void onOpen(ServerHandshake handShakeData) {
+            LogUtil.i(TAG, "EditorClient onOpen");
             isClosed = false;
         }
 
@@ -85,17 +87,19 @@ public class EditorConnection {
                         break;
                 }
             } catch (final JSONException e) {
-                Log.i(TAG, "onMessage: " + e.toString());
+                LogUtil.i(TAG, "EditorClient onMessage: " + e.toString());
             }
         }
 
         @Override
         public void onClose(int code, String reason, boolean remote) {
+            LogUtil.i(TAG, "EditorClient onClose: ");
             isClosed = true;
         }
 
         @Override
         public void onError(Exception ex) {
+            LogUtil.i(TAG,"EditorClient onError");
             isClosed = true;
 
         }
@@ -127,7 +131,13 @@ public class EditorConnection {
 
         @Override
         public void write(@NonNull byte[] b, int off, int len) throws IOException {
-            editorClient.send(b);
+            LogUtil.i(TAG, "EditorOutputStream write message ");
+            editorClient.send(new String(b));
         }
+    }
+
+    //webSocket chat test
+    public void sendTestMessage() {
+        editorClient.send("test message");
     }
 }

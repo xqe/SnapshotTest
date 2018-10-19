@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.example.data.tracker.mylibrary.AOP.expose.LogUtil;
 import com.example.data.tracker.mylibrary.AOP.expose.TrackRootView;
+import com.example.data.tracker.mylibrary.configCenter.ConfigManager;
 import com.example.data.tracker.mylibrary.interaction.connect.EditorConnection;
 import com.example.data.tracker.mylibrary.interaction.connect.IWebMessage;
 import com.example.data.tracker.mylibrary.interaction.connect.ShakeSensor;
@@ -29,7 +30,7 @@ public class WebEditor implements ShakeSensor.ShakeListener {
     private MyLifecycleCallback myLifecycleCallback;
     private GlobalLayoutListener globalLayoutListener;
     private IWebMessage webMessage;
-    private View currentRootView;
+    private Activity currentActivity;
     private Context context;
 
     public WebEditor(Context context,URI uri) {
@@ -74,7 +75,7 @@ public class WebEditor implements ShakeSensor.ShakeListener {
 
         @Override
         public void bindEvents(JSONObject message) {
-
+            ConfigManager.getInstance().parseConfig(context,message);
         }
 
         @Override
@@ -98,8 +99,9 @@ public class WebEditor implements ShakeSensor.ShakeListener {
 
         @Override
         public void onGlobalLayout() {
-            Log.i(TAG, "onGlobalLayout: ");
-            screenInfoCrawler.writeScreenInfo(editorConnection.getBufferedOutputStream(),currentRootView);
+            LogUtil.i(TAG, "onGlobalLayout: ");
+            screenInfoCrawler.writeScreenInfo(editorConnection.getBufferedOutputStream(),currentActivity);
+            //editorConnection.sendTestMessage();
         }
     }
 
@@ -118,17 +120,18 @@ public class WebEditor implements ShakeSensor.ShakeListener {
 
         @Override
         public void onActivityResumed(Activity activity) {
-            Log.i(TAG, "onActivityResumed: " + activity.getClass().getSimpleName());
-            currentRootView = activity.getWindow().getDecorView().getRootView();
+            LogUtil.i(TAG, "onActivityResumed: " + activity.getClass().getSimpleName());
+            currentActivity = activity;
             //currentRootView.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
-            screenInfoCrawler.writeScreenInfo(editorConnection.getBufferedOutputStream(),currentRootView);
+            screenInfoCrawler.writeScreenInfo(editorConnection.getBufferedOutputStream(),currentActivity);
             TrackRootView trackRootView = findTrackRootView(activity);
             if (trackRootView != null) {
                 trackRootView.setLayoutChangeListener(new TrackRootView.LayoutChangeListener() {
                     @Override
                     public void onLayoutChange() {
-                        Log.i(TAG, "onLayoutChange: ");
-                        screenInfoCrawler.writeScreenInfo(editorConnection.getBufferedOutputStream(),currentRootView);
+                        LogUtil.i(TAG, "onLayoutChange: ");
+                        screenInfoCrawler.writeScreenInfo(editorConnection.getBufferedOutputStream(),currentActivity);
+                        //editorConnection.sendTestMessage();
                     }
                 });
             }
@@ -141,7 +144,7 @@ public class WebEditor implements ShakeSensor.ShakeListener {
 
         @Override
         public void onActivityStopped(Activity activity) {
-            Log.i(TAG, "onActivityStopped: " + activity.getClass().getSimpleName());
+            LogUtil.i(TAG, "onActivityStopped: " + activity.getClass().getSimpleName());
             //currentRootView.getViewTreeObserver().removeOnGlobalLayoutListener(globalLayoutListener);
             TrackRootView trackRootView = findTrackRootView(activity);
             if (trackRootView != null) {

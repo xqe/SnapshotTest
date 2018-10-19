@@ -3,9 +3,12 @@ package com.example.data.tracker.mylibrary.interaction.viewTree;
 import android.app.Activity;
 import android.os.Build;
 import android.util.JsonWriter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
+import com.example.data.tracker.mylibrary.AOP.expose.LogUtil;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -17,6 +20,7 @@ import java.util.concurrent.TimeoutException;
 
 public class ViewTreeCrawler {
 
+    private static final String TAG = "ViewTreeCrawler";
 
     private ExecutorService executorService;
 
@@ -25,16 +29,21 @@ public class ViewTreeCrawler {
     }
 
     public void writeViewTreeInfo(View rootView, JsonWriter jsonWriter) throws IOException {
+        LogUtil.i(TAG, "writeViewTreeInfo: ");
         jsonWriter.beginObject();
+        jsonWriter.name("rootObject").value(rootView.hashCode());
+        jsonWriter.name("objects");
+        jsonWriter.beginArray();
         writeViewTree(jsonWriter,rootView);
+        jsonWriter.endArray();
         jsonWriter.endObject();
+        jsonWriter.flush();
     }
 
     private void writeViewTree(JsonWriter j, View view) throws IOException {
         if (view.getVisibility() == View.INVISIBLE) {
             return;
         }
-
         final int viewId = view.getId();
         final String viewIdName;
         if (-1 == viewId) {
@@ -43,7 +52,7 @@ public class ViewTreeCrawler {
             //待优化：不必每次getResources 加载资源
             viewIdName = view.getResources().getResourceName(viewId);
         }
-
+        j.beginObject();
         j.name("hashCode").value(view.hashCode());
         j.name("id").value(viewId);
         j.name("mp_id_name").value(viewIdName);
@@ -89,7 +98,6 @@ public class ViewTreeCrawler {
             klass = klass.getSuperclass();
         } while (klass != Object.class && klass != null);
         j.endArray();
-
         //addProperties(j, view);
 
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
@@ -118,6 +126,7 @@ public class ViewTreeCrawler {
             }
         }
         j.endArray();
+        j.endObject();
 
         if (view instanceof ViewGroup) {
             final ViewGroup group = (ViewGroup) view;

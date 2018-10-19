@@ -27,16 +27,16 @@ public class TrackerManager {
     }
 
     private static void attachTrackRootView(Activity activity) {
-        LogUtil.i(TAG, "attachTrackRootView: " + activity.getClass().getSimpleName());
+        //LogUtil.i(TAG, "attachTrackRootView: " + activity.getClass().getSimpleName());
         ViewGroup root = activity.findViewById(android.R.id.content);
-        LogUtil.i(TAG, "attachTrackRootView: " + root.getClass().getSimpleName());
+        //LogUtil.i(TAG, "attachTrackRootView: " + root.getClass().getSimpleName());
         if (root == null) {
-            LogUtil.e(TAG, "addTrackRootView: root is null");
+            //LogUtil.e(TAG, "addTrackRootView: root is null");
             return;
         }
         if (root.getChildCount() > 0) {
             if (root.getChildAt(0) instanceof TrackRootView) {
-                LogUtil.i(TAG, "addTrackRootView: already add trackRootView");
+                //LogUtil.i(TAG, "addTrackRootView: already add trackRootView");
                 return;
             }
             TrackRootView trackRootView = new TrackRootView(activity);
@@ -46,12 +46,12 @@ public class TrackerManager {
                 trackRootView.addView(child,child.getLayoutParams());
             }
             root.addView(trackRootView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            LogUtil.i(TAG, "attachTrackRootView: attach success");
+            //LogUtil.i(TAG, "attachTrackRootView: attach success");
         }
     }
 
     private static void detachTrackRootView(Activity activity) {
-        LogUtil.i(TAG, "detachTrackRootView: " + activity.getClass().getSimpleName());
+        //LogUtil.i(TAG, "detachTrackRootView: " + activity.getClass().getSimpleName());
         ViewGroup root = activity.findViewById(android.R.id.content);
         if (root == null) {
             return;
@@ -74,7 +74,7 @@ public class TrackerManager {
 
         @Override
         public void onActivityResumed(Activity activity) {
-            LogUtil.i(TAG, "onActivityResumed: " + activity.getClass().getSimpleName());
+            //LogUtil.i(TAG, "onActivityResumed: " + activity.getClass().getSimpleName());
             attachTrackRootView(activity);
         }
 
@@ -94,7 +94,7 @@ public class TrackerManager {
 
         @Override
         public void onActivityDestroyed(Activity activity) {
-            LogUtil.i(TAG, "onActivityDestroyed: " + activity.getClass().getSimpleName());
+            //LogUtil.i(TAG, "onActivityDestroyed: " + activity.getClass().getSimpleName());
             detachTrackRootView(activity);
         }
     }

@@ -7,6 +7,8 @@ import com.example.data.tracker.mylibrary.test.websocket.server.WebServer;
 
 public class Test {
 
+    private WebClient webClient;
+
     public void testWebSocket() {
         new Thread(){
             @Override
@@ -16,7 +18,7 @@ public class Test {
                 Log.e("--", "run: ");
                 webServer.start();
 
-                WebClient webClient = new WebClient(webServer.getHostName(),webServer.getPort());
+                webClient = new WebClient(webServer.getHostName(),webServer.getPort());
                 webClient.sendMessage();
             }
         }.start();

@@ -10,12 +10,9 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.data.tracker.mylibrary.test.DataTransmit;
 import com.example.data.tracker.mylibrary.test.floatSelect.FocusView;
 import com.example.data.tracker.mylibrary.AOP.AccessibilityDelegate;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.example.data.tracker.mylibrary.test.websocket.Test;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +43,11 @@ public class MainActivity extends Activity {
     @BindView(R.id.test3)
     Button test3;
 
+
+    boolean isViewAdd = false;
+    FocusView focusView;
+    Test test;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,11 +73,12 @@ public class MainActivity extends Activity {
             }
         });
 
+
     }
 
     @OnClick(R.id.button)
     public void click() {
-        int[] location = new int[2];
+        /*int[] location = new int[2];
         button4.getLocationOnScreen(location);
         int viewX = location[0];
         int viewY = location[1];
@@ -83,11 +86,18 @@ public class MainActivity extends Activity {
         params.put("1", "dsdksjkdsj");
         button.setTag(R.string.view_tag, params);
         textView2.setText("turn x:" + viewX + "~" + (viewX + button4.getWidth()));
-        textView.setText("turn y:" + viewY + "~" + (viewY + button4.getHeight()));
+        textView.setText("turn y:" + viewY + "~" + (viewY + button4.getHeight()));*/
+        /*if (!isViewAdd) {
+            container.addView(focusView);
+        } else {
+            container.removeView(focusView);
+        }
+        isViewAdd = !isViewAdd;*/
+        test = new Test();
+        test.testWebSocket();
+
     }
 
-    boolean isViewAdd = false;
-    FocusView focusView;
 
     @OnClick(R.id.button2)
     public void test() {
@@ -102,7 +112,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        DataTransmit.getInstance().startTransmit(this);
     }
 
     @Override

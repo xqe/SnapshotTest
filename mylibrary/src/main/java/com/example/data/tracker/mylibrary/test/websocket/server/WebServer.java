@@ -40,8 +40,7 @@ public class WebServer {
 
             @Override
             public void onMessage(ResponseBody message) throws IOException {
-                String request = message.string();
-                Log.e(TAG, "onMessage: -----");
+                String request = new String(message.bytes());
                 Log.e(TAG, "onMessage: " +  request);
                 if ("command 1".equals(request)) {
                     //replay client

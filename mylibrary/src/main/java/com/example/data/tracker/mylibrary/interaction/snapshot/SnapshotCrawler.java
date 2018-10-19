@@ -5,6 +5,8 @@ import android.util.Base64;
 import android.util.Base64OutputStream;
 import android.view.View;
 
+import com.example.data.tracker.mylibrary.AOP.expose.LogUtil;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.concurrent.ExecutionException;
@@ -23,6 +25,7 @@ public class SnapshotCrawler {
     }
 
     public void writeSnapshotData(View rootView,OutputStream outputStream) throws IOException{
+        LogUtil.i(TAG,"writeSnapshotData");
         SnapshotCall snapshotCall = new SnapshotCall(rootView);
         FutureTask<Bitmap> futureTask = new FutureTask<>(snapshotCall);
         executorService.submit(futureTask);

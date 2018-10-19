@@ -11,8 +11,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
 /**
- * find RootView form Activity and store snapshot to SnapshotInfo
- * Activity -> RootView ->snapshot -> SnapshotInfo
+ * find RootView form Activity and store snapshot
  *
  * */
 @TargetApi(16)
