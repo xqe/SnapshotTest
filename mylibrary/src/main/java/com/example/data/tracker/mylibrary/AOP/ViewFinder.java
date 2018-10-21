@@ -15,13 +15,24 @@ public class ViewFinder {
     private static final String TAG = "ViewFinder";
 
     /**
+     *   正式运行时,发生点击或曝光时候，直接查看缓存中是否存在该ViewID
+     * */
+    public static boolean isViewConfiged(View view) {
+
+
+        return false;
+    }
+
+    /**
      * find the targetView which matches the given viewID
+     * 用于编辑时测试
      */
     public static View findTarget(View givenRootView, String viewID) {
         if (givenRootView == null || TextUtils.isEmpty(viewID)) {
             return null;
         }
         String[] singleViewIDs = viewID.split(ViewIDMaker.CONNECTOR);
+        //ViewIDList逐级匹配
 
         return null;
     }

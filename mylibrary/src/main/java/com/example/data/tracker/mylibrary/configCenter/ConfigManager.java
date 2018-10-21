@@ -28,7 +28,7 @@ public class ConfigManager {
     }
 
     private void storeConfig(Context context,List<BindEvent> bindEvents) {
-        //viewId - targetActivity
+        //1、viewId - targetActivity
         SharedPreferences sharedPreferences = context.getSharedPreferences(CONFIG,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         for (int i = 0; i < bindEvents.size(); i++) {
@@ -37,10 +37,16 @@ public class ConfigManager {
             editor.putString(bindViewID,bindEvent.getTargetActivity());
         }
         editor.apply();
+
+        //2、activity - set<ViewId>
+
+        //事件测试，仅缓存解析当前编辑事件，不存入SharePreference
     }
 
 
     public void parseConfig(Context context,JSONObject jsonObject) {
+        //1、解析成ViewID再存储  2、直接存储，ViewFinder使用时再解析
+
         JSONArray jsonArray = null;
         try {
             JSONObject payload = jsonObject.getJSONObject("payload");
