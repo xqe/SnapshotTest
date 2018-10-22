@@ -1,7 +1,9 @@
 package com.example.data.tracker.datatracker;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,9 +12,12 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.data.tracker.mylibrary.configCenter.BindEvent;
 import com.example.data.tracker.mylibrary.test.floatSelect.FocusView;
-import com.example.data.tracker.mylibrary.AOP.AccessibilityDelegate;
 import com.example.data.tracker.mylibrary.test.websocket.Test;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,8 +69,6 @@ public class MainActivity extends Activity {
             }
         });
 
-        button.setAccessibilityDelegate(new AccessibilityDelegate());
-
         button.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
@@ -87,14 +90,28 @@ public class MainActivity extends Activity {
         button.setTag(R.string.view_tag, params);
         textView2.setText("turn x:" + viewX + "~" + (viewX + button4.getWidth()));
         textView.setText("turn y:" + viewY + "~" + (viewY + button4.getHeight()));*/
+
         /*if (!isViewAdd) {
             container.addView(focusView);
         } else {
             container.removeView(focusView);
         }
         isViewAdd = !isViewAdd;*/
-        test = new Test();
-        test.testWebSocket();
+
+        /*test = new Test();
+        test.testWebSocket();*/
+
+        Set<BindEvent> set = new HashSet<>();
+        for (int i = 0; i < 10; i++) {
+            set.add(new BindEvent.Builder()
+                    .eventName("name" +i)
+                    .eventType("type" + i)
+                    .path(null)
+                    .targetActivity("targetActivity" + i)
+                    .build());
+        }
+
+        SharedPreferences sharedPreferences = getSharedPreferences("test", Context.MODE_PRIVATE);
 
     }
 

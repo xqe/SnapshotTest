@@ -3,7 +3,7 @@ package com.example.data.tracker.datatracker;
 import android.app.Application;
 
 import com.example.data.tracker.mylibrary.AOP.expose.TrackerManager;
-import com.example.data.tracker.mylibrary.TestAPI;
+import com.example.data.tracker.mylibrary.test.TestAPI;
 
 public class App extends Application {
 

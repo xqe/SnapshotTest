@@ -51,7 +51,12 @@ public class BindEvent {
         return sb.toString();
     }
 
-    static class Builder{
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    public static class Builder{
         private String triggerId;
         private String eventType;
         private String eventName;

@@ -1,11 +1,9 @@
-package com.example.data.tracker.mylibrary;
+package com.example.data.tracker.mylibrary.test;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.data.tracker.mylibrary.interaction.WebEditor;
 import com.example.data.tracker.mylibrary.interaction.connect.ServerTest;
-import com.example.data.tracker.mylibrary.test.websocket.server.WebServer;
 
 import java.net.URI;
 

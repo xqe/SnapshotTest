@@ -1,4 +1,4 @@
-package com.example.data.tracker.mylibrary.interaction.snapshot;
+package com.example.data.tracker.mylibrary.interaction;
 
 import android.graphics.Bitmap;
 import android.util.Base64;

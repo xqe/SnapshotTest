@@ -1,4 +1,4 @@
-package com.example.data.tracker.mylibrary.interaction.viewTree;
+package com.example.data.tracker.mylibrary.interaction;
 
 import android.app.Activity;
 import android.os.Build;
@@ -141,16 +141,5 @@ public class ViewTreeCrawler {
         }
     }
 
-    public ViewTreeInfo getViewTreeInfo(Activity activity) {
-        ViewTreeCall viewTreeCall = new ViewTreeCall(activity);
-        FutureTask<ViewTreeInfo> futureTask = new FutureTask<>(viewTreeCall);
-        executorService.submit(futureTask);
-        ViewTreeInfo viewTreeInfo = null;
-        try {
-            viewTreeInfo = futureTask.get(5, TimeUnit.SECONDS);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            e.printStackTrace();
-        }
-        return viewTreeInfo;
-    }
+
 }

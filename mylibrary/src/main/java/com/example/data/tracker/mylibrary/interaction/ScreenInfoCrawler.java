@@ -2,12 +2,9 @@ package com.example.data.tracker.mylibrary.interaction;
 
 import android.app.Activity;
 import android.util.JsonWriter;
-import android.util.Log;
 import android.view.View;
 
 import com.example.data.tracker.mylibrary.AOP.expose.LogUtil;
-import com.example.data.tracker.mylibrary.interaction.snapshot.SnapshotCrawler;
-import com.example.data.tracker.mylibrary.interaction.viewTree.ViewTreeCrawler;
 
 import org.json.JSONObject;
 

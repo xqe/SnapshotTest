@@ -1,4 +1,4 @@
-package com.example.data.tracker.mylibrary.interaction.snapshot;
+package com.example.data.tracker.mylibrary.interaction;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
@@ -67,5 +68,11 @@ public class SnapshotCall implements Callable<Bitmap>{
         }
 
         return rawBitmap;
+    }
+
+    public static byte[] Bitmap2Bytes(Bitmap bm) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 }

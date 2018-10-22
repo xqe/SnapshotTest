@@ -1,43 +1,85 @@
 package com.example.data.tracker.mylibrary.AOP;
 
+import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.data.tracker.mylibrary.configCenter.BindEvent;
+import com.example.data.tracker.mylibrary.configCenter.ConfigManager;
 import com.example.data.tracker.mylibrary.configCenter.PathElement;
 import com.example.data.tracker.mylibrary.test.floatSelect.ViewIDMaker;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Set;
 
 public class ViewFinder {
 
     private static final String TAG = "ViewFinder";
+    private Set<BindEvent> currentConfigEvents;
+    private WeakReference<View> currentRootView;
 
-    /**
-     *   正式运行时,发生点击或曝光时候，直接查看缓存中是否存在该ViewID
-     * */
-    public static boolean isViewConfiged(View view) {
+    private ViewFinder() {
+    }
 
+    private static class Holder {
+        private static final ViewFinder INSTANCE = new ViewFinder();
+    }
 
-        return false;
+    public static ViewFinder getInstance() {
+        return Holder.INSTANCE;
     }
 
     /**
-     * find the targetView which matches the given viewID
-     * 用于编辑时测试
+     * 正式运行时,发生点击或曝光时候，直接查看缓存中是否存在该ViewID
      */
-    public static View findTarget(View givenRootView, String viewID) {
-        if (givenRootView == null || TextUtils.isEmpty(viewID)) {
-            return null;
-        }
-        String[] singleViewIDs = viewID.split(ViewIDMaker.CONNECTOR);
-        //ViewIDList逐级匹配
+    public BindEvent isViewConfiged(View view) {
+        String viewId = ViewIDMaker.getViewID(view);
+        return containsInCurrentConfig(viewId);
+    }
 
+    public void cacheCurrentConfig(Activity activity) {
+        String activityName = activity.getClass().getCanonicalName();
+        currentConfigEvents = ConfigManager.getInstance().getVisualConfig(activity, activityName);
+        View rootView = activity.getWindow().getDecorView().getRootView();
+        currentRootView = new WeakReference<>(rootView);
+    }
+
+    /**
+     * set delegate for all the config View
+     * */
+    public void setDataDelegate() {
+        for (BindEvent bindEvent : currentConfigEvents) {
+            View target = findTargetView(bindEvent.getPath());
+            ClickDelegate.setClickDelegate(target, bindEvent);
+        }
+    }
+
+    private BindEvent containsInCurrentConfig(String viewID) {
+        for (BindEvent bindEvent : currentConfigEvents) {
+            if (viewID.equals(bindEvent.createViewID())) {
+                return bindEvent;
+            }
+        }
         return null;
     }
 
-    public static View findTargetView(View givenRootView, List<PathElement> pathElementList) {
+    /**
+     * find the targetView from current rootView
+     */
+    public View findTargetView(List<PathElement> pathElementList) {
+        return findTargetView(currentRootView.get(), pathElementList);
+    }
+
+    /**
+     * find the targetView from given rootView
+     */
+    public View findTargetView(View givenRootView, List<PathElement> pathElementList) {
+        if (givenRootView == null) {
+            return null;
+        }
         if (pathElementList.isEmpty()) {
             Log.i(TAG, "findTargetView: pathList is null");
             return null;
